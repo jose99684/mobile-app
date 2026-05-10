@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
 } from 'react-native';
 
-const RegisterScreen = ({ navigation }: any) => {
+import { router } from 'expo-router';
+
+const RegisterScreen = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
@@ -19,12 +22,57 @@ const RegisterScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // VALIDAR EMAIL
+  const validateEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  // VALIDAR FORMULARIO
+  const handleRegister = () => {
+    if (
+      !firstName ||
+      !lastName ||
+      !phone ||
+      !address ||
+      !country ||
+      !email ||
+      !password
+    ) {
+      Alert.alert('Error', 'All fields are required');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert('Error', 'Invalid email');
+      return;
+    }
+
+    if (phone.length < 7) {
+      Alert.alert('Error', 'Invalid phone number');
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert(
+        'Error',
+        'Password must contain at least 6 characters'
+      );
+      return;
+    }
+
+    Alert.alert('Success', 'Account created successfully');
+
+    // REDIRIGIR AL LOGIN
+    router.push('/');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
 
       <View style={styles.header}>
         <Text style={styles.logo}>NovaBank</Text>
+
         <Text style={styles.subtitle}>
           Create your new account
         </Text>
@@ -37,6 +85,7 @@ const RegisterScreen = ({ navigation }: any) => {
         <Text style={styles.title}>Register</Text>
 
         <Text style={styles.label}>Firstname</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your firstname"
@@ -46,6 +95,7 @@ const RegisterScreen = ({ navigation }: any) => {
         />
 
         <Text style={styles.label}>Lastname</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your lastname"
@@ -55,6 +105,7 @@ const RegisterScreen = ({ navigation }: any) => {
         />
 
         <Text style={styles.label}>Mobile phone</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your phone"
@@ -65,6 +116,7 @@ const RegisterScreen = ({ navigation }: any) => {
         />
 
         <Text style={styles.label}>Address</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your address"
@@ -74,6 +126,7 @@ const RegisterScreen = ({ navigation }: any) => {
         />
 
         <Text style={styles.label}>Country</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your country"
@@ -83,16 +136,19 @@ const RegisterScreen = ({ navigation }: any) => {
         />
 
         <Text style={styles.label}>Email</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your email"
           placeholderTextColor="#94A3B8"
           keyboardType="email-address"
+          autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />
 
         <Text style={styles.label}>Password</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Enter your password"
@@ -102,19 +158,25 @@ const RegisterScreen = ({ navigation }: any) => {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={styles.button}>
+        {/* BOTÓN REGISTRO */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleRegister}
+        >
           <Text style={styles.buttonText}>
             Sign up
           </Text>
         </TouchableOpacity>
 
+        {/* VOLVER LOGIN */}
         <TouchableOpacity
-          onPress={() => navigation?.navigate?.('Login')}
+          onPress={() => router.push('/')}
         >
           <Text style={styles.link}>
             I already have an account
           </Text>
         </TouchableOpacity>
+
       </ScrollView>
     </SafeAreaView>
   );

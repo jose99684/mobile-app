@@ -51,14 +51,14 @@ const LoginScreen = () => {
         {/* BOTÓN LOGIN */}
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => router.push('/src/screens/HomeScreen')}
+          onPress={() => router.push('/screens/HomeScreen')}
         >
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
 
         {/* BOTÓN REGISTER */}
         <TouchableOpacity
-          onPress={() => router.push('/src/screens/RegisterScreen')}
+          onPress={() => router.push('/screens/RegisterScreen')}
         >
           <Text style={styles.registerText}>
             I don't have an account
