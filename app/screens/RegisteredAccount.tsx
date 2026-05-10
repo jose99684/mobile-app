@@ -16,19 +16,21 @@ const HomeScreen = () => {
 
       <View style={styles.centerContainer}>
         <Text style={styles.welcomeText}>
-          AVVILLAS
+          Cuenta registrada
         </Text>
       </View>
     </SafeAreaView>
   );
 };
 
+
+
 export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f10e0e',
+    backgroundColor: '#0F172A',
   },
 
   centerContainer: {

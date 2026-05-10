@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 import { router } from 'expo-router';
@@ -20,12 +20,12 @@ const LoginScreen = () => {
       <StatusBar barStyle="light-content" />
 
       <View style={styles.header}>
-        <Text style={styles.bankName}>NovaBank</Text>
+        <Text style={styles.bankName}>AVVILLAS</Text>
         <Text style={styles.subtitle}>Secure Mobile Banking</Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.title}>LOGIN APP BANK</Text>
 
         <Text style={styles.label}>Email</Text>
 
@@ -75,7 +75,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F172A',
+    backgroundColor: '#DC2626',
   },
 
   header: {
@@ -91,8 +91,9 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    color: '#CBD5E1',
+    color: '#F8FAFC',
     fontSize: 16,
+    marginTop: 10,
   },
 
   card: {
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    color: '#334155',
+    color: '#64748B',
     fontSize: 15,
     marginBottom: 8,
     fontWeight: '600',
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
   },
 
   loginButton: {
-    backgroundColor: '#0F172A',
+    backgroundColor: '#394658',
     padding: 18,
     borderRadius: 14,
     alignItems: 'center',
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   },
 
   loginButtonText: {
-    color: '#FFFFFF',
+    color: '#9CA3AF',
     fontSize: 18,
     fontWeight: '700',
   },

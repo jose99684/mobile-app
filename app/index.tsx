@@ -1,5 +1,19 @@
-import LoginScreen from "./screens/LoginScreen";
+import { router } from 'expo-router';
+import React, { useEffect } from 'react';
+
+import SplashScreen from './screens/SplashScreen';
 
 export default function Index() {
-  return <LoginScreen />;
+
+  useEffect(() => {
+
+    const timer = setTimeout(() => {
+      router.replace('/screens/LoginScreen');
+    }, 3000);
+
+    return () => clearTimeout(timer);
+
+  }, []);
+
+  return <SplashScreen />;
 }

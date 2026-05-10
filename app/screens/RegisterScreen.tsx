@@ -11,9 +11,12 @@ import {
   View,
 } from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 const RegisterScreen = () => {
+
+  // STATES
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
@@ -22,13 +25,27 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // VALIDAR EMAIL
+  // ERRORS
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // SHOW PASSWORD
+  const [showPassword, setShowPassword] = useState(false);
+
+  // FORM VALIDATION
+  const isFormValid = firstName && lastName && phone && address && country && email && password;
+
+  // VALIDATE EMAIL
   const validateEmail = (email: string) => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  // VALIDAR FORMULARIO
+  // REGISTER
   const handleRegister = () => {
+
     if (
       !firstName ||
       !lastName ||
@@ -60,30 +77,36 @@ const RegisterScreen = () => {
       return;
     }
 
-    Alert.alert('Success', 'Account created successfully');
+    Alert.alert(
+      'Success',
+      'Account created successfully'
+    );
 
-    // REDIRIGIR AL LOGIN
-    router.push('/');
+    router.push('/screens/RegisteredAccount');
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
 
+      {/* HEADER */}
       <View style={styles.header}>
-        <Text style={styles.logo}>NovaBank</Text>
+        <Text style={styles.logo}>AVVILLAS</Text>
 
         <Text style={styles.subtitle}>
           Create your new account
         </Text>
       </View>
 
+      {/* CARD */}
       <ScrollView
         style={styles.card}
         showsVerticalScrollIndicator={false}
       >
+
         <Text style={styles.title}>Register</Text>
 
+        {/* FIRSTNAME */}
         <Text style={styles.label}>Firstname</Text>
 
         <TextInput
@@ -91,9 +114,27 @@ const RegisterScreen = () => {
           placeholder="Enter your firstname"
           placeholderTextColor="#94A3B8"
           value={firstName}
-          onChangeText={setFirstName}
+          onChangeText={(text) => {
+
+            if (/^[a-zA-Z\s]*$/.test(text)) {
+              setFirstName(text);
+              setFirstNameError('');
+            } else {
+              setFirstNameError(
+                'Only letters allowed'
+              );
+            }
+
+          }}
         />
 
+        {firstNameError ? (
+          <Text style={styles.errorText}>
+            {firstNameError}
+          </Text>
+        ) : null}
+
+        {/* LASTNAME */}
         <Text style={styles.label}>Lastname</Text>
 
         <TextInput
@@ -101,9 +142,27 @@ const RegisterScreen = () => {
           placeholder="Enter your lastname"
           placeholderTextColor="#94A3B8"
           value={lastName}
-          onChangeText={setLastName}
+          onChangeText={(text) => {
+
+            if (/^[a-zA-Z\s]*$/.test(text)) {
+              setLastName(text);
+              setLastNameError('');
+            } else {
+              setLastNameError(
+                'Only letters allowed'
+              );
+            }
+
+          }}
         />
 
+        {lastNameError ? (
+          <Text style={styles.errorText}>
+            {lastNameError}
+          </Text>
+        ) : null}
+
+        {/* PHONE */}
         <Text style={styles.label}>Mobile phone</Text>
 
         <TextInput
@@ -112,9 +171,27 @@ const RegisterScreen = () => {
           placeholderTextColor="#94A3B8"
           keyboardType="phone-pad"
           value={phone}
-          onChangeText={setPhone}
+          onChangeText={(text) => {
+
+            if (/^[0-9]*$/.test(text)) {
+              setPhone(text);
+              setPhoneError('');
+            } else {
+              setPhoneError(
+                'Only numbers allowed'
+              );
+            }
+
+          }}
         />
 
+        {phoneError ? (
+          <Text style={styles.errorText}>
+            {phoneError}
+          </Text>
+        ) : null}
+
+        {/* ADDRESS */}
         <Text style={styles.label}>Address</Text>
 
         <TextInput
@@ -125,6 +202,7 @@ const RegisterScreen = () => {
           onChangeText={setAddress}
         />
 
+        {/* COUNTRY */}
         <Text style={styles.label}>Country</Text>
 
         <TextInput
@@ -132,9 +210,16 @@ const RegisterScreen = () => {
           placeholder="Enter your country"
           placeholderTextColor="#94A3B8"
           value={country}
-          onChangeText={setCountry}
+          onChangeText={(text) => {
+
+            if (/^[a-zA-Z\s]*$/.test(text)) {
+              setCountry(text);
+            }
+
+          }}
         />
 
+        {/* EMAIL */}
         <Text style={styles.label}>Email</Text>
 
         <TextInput
@@ -144,31 +229,96 @@ const RegisterScreen = () => {
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(text) => {
+
+            setEmail(text);
+
+            if (
+              text.length > 0 &&
+              !validateEmail(text)
+            ) {
+              setEmailError('Invalid email');
+            } else {
+              setEmailError('');
+            }
+
+          }}
         />
 
+        {emailError ? (
+          <Text style={styles.errorText}>
+            {emailError}
+          </Text>
+        ) : null}
+
+        {/* PASSWORD */}
         <Text style={styles.label}>Password</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your password"
-          placeholderTextColor="#94A3B8"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+        <View style={styles.passwordContainer}>
 
-        {/* BOTÓN REGISTRO */}
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Enter your password"
+            placeholderTextColor="#94A3B8"
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={(text) => {
+
+              setPassword(text);
+
+              if (text.length < 6) {
+                setPasswordError(
+                  'Minimum 6 characters'
+                );
+              } else {
+                setPasswordError('');
+              }
+
+            }}
+          />
+
+          <TouchableOpacity
+            onPress={() =>
+              setShowPassword(!showPassword)
+            }
+          >
+            <Ionicons
+              name={
+                showPassword
+                  ? 'eye-off'
+                  : 'eye'
+              }
+              size={24}
+              color="#64748B"
+            />
+          </TouchableOpacity>
+
+        </View>
+
+        {passwordError ? (
+          <Text style={styles.errorText}>
+            {passwordError}
+          </Text>
+        ) : null}
+
+        {/* BUTTON */}
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, !isFormValid && styles.buttonDisabled]}
           onPress={handleRegister}
+          disabled={!isFormValid}
         >
           <Text style={styles.buttonText}>
             Sign up
           </Text>
         </TouchableOpacity>
 
-        {/* VOLVER LOGIN */}
+        {!isFormValid && (
+          <Text style={styles.warningText}>
+            Debe diligenciar todos los campos
+          </Text>
+        )}
+
+        {/* LOGIN */}
         <TouchableOpacity
           onPress={() => router.push('/')}
         >
@@ -185,9 +335,10 @@ const RegisterScreen = () => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: '#0F172A',
+    backgroundColor: '#e91414',
   },
 
   header: {
@@ -240,6 +391,31 @@ const styles = StyleSheet.create({
     borderColor: '#E2E8F0',
   },
 
+  passwordContainer: {
+    backgroundColor: '#F1F5F9',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginBottom: 20,
+  },
+
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 15,
+    fontSize: 16,
+  },
+
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: -15,
+    marginBottom: 10,
+    marginLeft: 5,
+  },
+
   button: {
     backgroundColor: '#0F172A',
     padding: 18,
@@ -248,10 +424,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+
   buttonText: {
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: '700',
+  },
+
+  warningText: {
+    color: 'red',
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 10,
   },
 
   link: {
@@ -261,4 +448,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 40,
   },
+
 });
